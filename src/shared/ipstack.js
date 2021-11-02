@@ -12,7 +12,7 @@ module.exports = (app) => {
       city: response.city,
       lat: response.latitude,
       lon: response.longitude,
-      provider: response.connection.isp,
+      provider: response?.connection?.isp,
     };
   }
 

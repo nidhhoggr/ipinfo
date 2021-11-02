@@ -25,7 +25,7 @@ module.exports = (app) => {
 
   function get({key, setterFn}, callback) {
     key = prefix(key);
-    app.modules.redis.getAsync(prefix(key).then(res => {
+    app.modules.redis.getAsync(key).then(res => {
       if (res) {
         debug(`Found ${res} from ${key}`);
         callback(undefined, {value: JSON.parse(res)});
