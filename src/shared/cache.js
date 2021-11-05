@@ -9,7 +9,6 @@ module.exports = (app) => {
   function set({key, value}) {
     let setter;
     const { caching_ttl } = app.config.local;
-    key = prefix(key);
     if (caching_ttl) {
       setter = app.modules.redis.setAsync(key, value, 'EX', caching_ttl);
     }
@@ -32,11 +31,17 @@ module.exports = (app) => {
       }
       else {
         setterFn((err, value) => {
-          const stringified = JSON.stringify(value);
-          debug(`Attempting to set ${key} to ${stringified}`);
-          set({key, value: stringified}).then(result => {
-            callback(undefined, {value, result});
-          }).catch(callback);
+          if (value) {
+            const stringified = JSON.stringify(value);
+            debug(`Attempting to set ${key} to ${stringified}`);
+            set({key, value: stringified}).then(result => {
+              callback(undefined, {value, result});
+            }).catch(callback);
+          }
+          else {
+            debug(`setterFn returned empty: ${key}`);
+            callback();
+          }
         });
       }
     }).catch(callback);

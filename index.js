@@ -3,6 +3,7 @@ const assert = require('assert');
 const requireDirectory = require('require-directory');
 const config = require('./src/config/config');
 const debug = require('./src/shared/debug')({config})('boot');
+const cors = require('cors');
 
 bootload();
 
@@ -25,9 +26,11 @@ function bootload() {
     context.modules[k] = sModule(context);
   }
 
+  context.express.use(cors());
+  
   bindRoutesByMethod({method: "get", context});
 
-  app.listen(port, () => debug(`Example app listening on port ${port}!`));
+  context.express.listen(port, () => debug(`Example app listening on port ${port}!`));
 }
 
 function bindRoutesByMethod({method, context}) {
@@ -36,7 +39,7 @@ function bindRoutesByMethod({method, context}) {
   for (j in routes) {
     route = routes[j];
     debug(`Binding route (${j}) to routing as a (${method}) method`);
-    context.express[method](`/api/v1/${j}`, [authorize], (req, res, next) => route(context)({req, res, next}));
+    context.express[method](`/api/v1/${j}`, [authorize, cors()], (req, res, next) => route(context)({req, res, next}));
   }
 }
 
