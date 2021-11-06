@@ -21,8 +21,8 @@ module.exports = (app) => {
           if (is_valid_response(result)) {
             cbReached = true;    
             cb(undefined, result);
+            break;
           }
-          break;
         }
         if (!cbReached) cb();
       }
@@ -44,13 +44,20 @@ module.exports = (app) => {
     try {
       const infoResult = await cachingInfoLookup({ip});
       const spamResult = await cachingSpamLookup({ip});
-      res.send({
-        ...infoResult.value,
-        spam: spamResult.value,
-      });
+      if (infoResult) {
+        res.send({
+          ...infoResult.value,
+          spam: spamResult?.value,
+        });
+      }
+      else {
+        const err = `cant get info from ip: ${ip}`;
+        debug(err);
+        next(JSON.stringify({error: err}));
+      }
     } catch(err) {
       debug(err.message);
-      next(err);
+      next(JSON.stringify({error: err.message}));
     }
   }
 }

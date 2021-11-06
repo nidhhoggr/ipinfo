@@ -17,7 +17,7 @@ module.exports = (app) => {
     const { ip } = args;
     const url = `http://v2.api.iphub.info/ip/${ip}`;
     debug(`Fetching ${url}`);
-    fetch(url, { method: 'GET', headers: {"X-Key": "MTU3Nzc6alF6c1ZxeTNUZU5WVng5ZnVEYUk0QlkycU1LNFcyN3o="}})
+    fetch(url, { method: 'GET', headers: {"X-Key": app.config.iphub.api_key}})
       .then(fRes => fRes.json())
       .then(json => {
         debug(json);
