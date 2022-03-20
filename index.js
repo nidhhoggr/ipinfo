@@ -34,7 +34,7 @@ function bootload() {
 }
 
 function bindRoutesByMethod({method, context}) {
-  let j, route;
+  let j;
   const routes = requireDirectory(module, `./src/routes/${method}/`);
   for (j in routes) {
     const route = routes[j];
