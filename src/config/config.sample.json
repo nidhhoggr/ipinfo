@@ -1,0 +1,30 @@
+{
+  "local": {
+    "namespace": "ipinfo",
+    "port": 3002,
+    "caching_ttl": false
+  },
+  "ipgeolocation": {
+    "api_key": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX001"
+  },
+  "ipstack": {
+    "api_key": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX002" 
+  },
+  "iphub": {
+    "api_key": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX003"
+  },
+  "access_token": {
+    "id": "XXXXXXXXXXX_MY-SERVER-TOKEN"
+  },
+  "redis": {
+    "host": "0.0.0.0",
+    "port": 6379,
+    "pass": "XXXXXXXXXXXXX_MY-REDIS_PASSWORD",
+    "key_prefix": "ipinfo"
+  },
+  "modules": [
+    "ipapi",
+    "ipstack",
+    "ipgeolocation"
+  ]
+}

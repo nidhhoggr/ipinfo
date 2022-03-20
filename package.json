@@ -8,7 +8,7 @@
     "start": "DEBUG=ipinfo:* node index.js",
     "pm2": "DEBUG=ipinfo:* pm2 start /var/www/vhosts/ipinfo/index.js -i 1 --name \"ipinfo\""
   },
-  "author": "",
+  "author": "Joseph Persie",
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.5.4",
