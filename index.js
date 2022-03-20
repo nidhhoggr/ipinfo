@@ -37,8 +37,8 @@ function bindRoutesByMethod({method, context}) {
   let j, route;
   const routes = requireDirectory(module, `./src/routes/${method}/`);
   for (j in routes) {
-    route = routes[j];
-    debug(`Binding route (${j}) to routing as a (${method}) method`);
+    const route = routes[j];
+    debug(`Binding route (${j}) to routing as a (${method}) method`, route.toString());
     context.express[method](`/api/v1/${j}`, [authorize, cors()], (req, res, next) => route(context)({req, res, next}));
   }
 }

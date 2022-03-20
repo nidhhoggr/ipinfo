@@ -30,19 +30,24 @@ module.exports = (app) => {
         callback(undefined, {value: JSON.parse(res)});
       }
       else {
-        setterFn((err, value) => {
-          if (value) {
-            const stringified = JSON.stringify(value);
-            debug(`Attempting to set ${key} to ${stringified}`);
-            set({key, value: stringified}).then(result => {
-              callback(undefined, {value, result});
-            }).catch(callback);
-          }
-          else {
-            debug(`setterFn returned empty: ${key}`);
-            callback();
-          }
-        });
+        if(setterFn) {
+          setterFn((err, value) => {
+            if (value) {
+              const stringified = JSON.stringify(value);
+              debug(`Attempting to set ${key} to ${stringified}`);
+              set({key, value: stringified}).then(result => {
+                callback(undefined, {value, result});
+              }).catch(callback);
+            }
+            else {
+              debug(`setterFn returned empty: ${key}`);
+              callback();
+            }
+          });
+        }
+        else {
+          callback();
+        }
       }
     }).catch(callback);
   }

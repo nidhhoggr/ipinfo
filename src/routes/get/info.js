@@ -36,18 +36,27 @@ module.exports = (app) => {
     });
   }
 
+  function cachingBanLookup({ip} = {}) {
+    return app.modules.cache.getAsync({
+      key: `ban:${ip}`,
+    });
+  }
+
   return async function({req, res, next}) {
     const {
       ip
     } = req.query;
+    debug('calling info for ', ip)
     assert(ip, "ip is required");
     try {
       const infoResult = await cachingInfoLookup({ip});
       const spamResult = await cachingSpamLookup({ip});
+      const banResult = await cachingBanLookup({ip});
       if (infoResult) {
         res.send({
           ...infoResult.value,
           spam: spamResult?.value,
+          ban: banResult?.value,
         });
       }
       else {
